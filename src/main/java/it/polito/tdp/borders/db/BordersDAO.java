@@ -57,6 +57,7 @@ public class BordersDAO {
 		return null ;
 	}
 	
+	//prende dalla tabella country tutti i paesi in cui il codice si trova nella query annidata
 	public List<Country> getCountriesFromYear(int anno,Map<Integer,Country> countriesMap) {
 		String sql = "select * from country " + 
 				"where CCode in ( " + 

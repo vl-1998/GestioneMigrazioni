@@ -17,9 +17,12 @@ public class Model {
 	
 	private Graph<Country, DefaultEdge> graph ;
 	private Map<Integer,Country> countriesMap ;
+	//definiamo un attributo del modello che si riferisca ad un istanza del simulatore
+	private Simulator sim;
 	
 	public Model() {
 		this.countriesMap = new HashMap<>() ;
+		this.sim= new Simulator();
 
 	}
 	
@@ -41,7 +44,15 @@ public class Model {
 			
 		}
 	}
+	public List <Country> getCountries() {
+		List <Country> res = new ArrayList <>();
+		res.addAll(this.graph.vertexSet());
+		Collections.sort(res);
+		return res;
+	}
 	
+	//metodo che ci permette di stampare l'elenco degli stati nella maniera richiesta, si appoggia sulla classe 
+	//temporanea country e number, che conta il numero di vicini di quella country
 	public List<CountryAndNumber> getCountryAndNumber() {
 		List<CountryAndNumber> list = new ArrayList<>() ;
 		
@@ -51,5 +62,37 @@ public class Model {
 		Collections.sort(list);
 		return list ;
 	}
+	
+	//creiamo un metodo 
+	public void simula(Country partenza) {
+		//simuliamo solo se il grafo è stato creato
+		if (this.graph!=null) {
+			sim.init(partenza, this.graph); //inizializzo il simulatore
+			sim.run();
+		}
+	
+	}
+	
+	public Integer getT() {
+		//solo se c'è stata effettivamente una smulazione
+		return this.sim.getT();
+	}
+	
+	//metodo per recuperare la mappa di stanziali, l'elenco deve essere stampato in ordine decrescente di numero di persone
+	//in questo caso l'attributo number conterra il numero di stanziali invece del numero di stati
+	public List <CountryAndNumber>  getStanziali(){
+		Map <Country, Integer> stanziali = this.sim.getStanziali();
+		List <CountryAndNumber> res = new ArrayList<>();
+		//per ogni coppia chiave valore creiamo una nuova istanza di country and number che aggiungiamo nella lista res
+		for (Country c: stanziali.keySet()) {
+			CountryAndNumber cn = new CountryAndNumber(c, stanziali.get(c));
+			res.add(cn);
+		}
+		Collections.sort(res); // La ordiniamo perchè country and number incrementa comparable gia nel modo che ci serve
+		return res;
+	}
+
+	
+	
 
 }

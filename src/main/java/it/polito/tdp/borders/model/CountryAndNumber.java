@@ -29,7 +29,7 @@ public class CountryAndNumber implements Comparable<CountryAndNumber> {
 
 	@Override
 	public int compareTo(CountryAndNumber other) {
-		// ordine DECRESCENTE per numero
+		// ordine DECRESCENTE per numero (il meno può essere usato solo perchè ho un tipo primitivo intero)
 		return -(this.number-other.number);
 	}
 	
